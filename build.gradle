@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.github.jvtopsilva090'
+version = '2.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
