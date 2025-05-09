@@ -24,5 +24,6 @@
 				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
 			</matcher>
 		</filter>
-	</filteredResources>
+	</filteredResources> 
+9648096a7500e6c822b2441dc251e7a3aac7184a
 </projectDescription>
