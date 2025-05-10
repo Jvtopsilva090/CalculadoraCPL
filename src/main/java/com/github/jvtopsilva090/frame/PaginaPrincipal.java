@@ -1,4 +1,4 @@
-package principal;
+package com.github.jvtopsilva090.frame;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -56,10 +56,5 @@ public class PaginaPrincipal extends JFrame implements ActionListener {
             this.dispose();
             JOptionPane.showMessageDialog(this, "Outra opção selecionada.");
         }
-    }
-
-    public static void main(String[] args) {
-        PaginaPrincipal pagina = new PaginaPrincipal();
-        pagina.setVisible(true);
     }
 }

@@ -1,4 +1,6 @@
-package principal;
+package com.github.jvtopsilva090.repository;
+
+import com.github.jvtopsilva090.model.HistoricoModel;
 
 import java.sql.*;
 import java.util.*;

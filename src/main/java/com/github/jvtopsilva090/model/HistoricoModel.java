@@ -1,4 +1,4 @@
-package principal;
+package com.github.jvtopsilva090.model;
 
 public class HistoricoModel {
     private int id;

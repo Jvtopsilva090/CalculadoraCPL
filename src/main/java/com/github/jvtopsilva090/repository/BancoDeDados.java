@@ -1,4 +1,4 @@
-package principal;
+package com.github.jvtopsilva090.repository;
 
 import java.sql.*;
 import java.util.ArrayList;

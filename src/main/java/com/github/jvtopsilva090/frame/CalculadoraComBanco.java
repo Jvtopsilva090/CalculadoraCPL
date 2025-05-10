@@ -1,4 +1,8 @@
-package principal;
+package com.github.jvtopsilva090.frame;
+
+import com.github.jvtopsilva090.repository.BancoDeDados;
+import com.github.jvtopsilva090.service.AvaliadorExpressao;
+import com.github.jvtopsilva090.service.HistoricoManager;
 
 import java.awt.BorderLayout;
 import java.util.List;

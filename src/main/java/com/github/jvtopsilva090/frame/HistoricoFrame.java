@@ -1,4 +1,7 @@
-package principal;
+package com.github.jvtopsilva090.frame;
+
+import com.github.jvtopsilva090.model.HistoricoModel;
+import com.github.jvtopsilva090.service.HistoricoService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

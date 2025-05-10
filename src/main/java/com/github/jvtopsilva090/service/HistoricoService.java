@@ -1,4 +1,7 @@
-package principal;
+package com.github.jvtopsilva090.service;
+
+import com.github.jvtopsilva090.model.HistoricoModel;
+import com.github.jvtopsilva090.repository.HistoricoDAO;
 
 import java.util.List;
 
