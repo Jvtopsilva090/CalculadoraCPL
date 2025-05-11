@@ -1,9 +1,9 @@
 package com.github.jvtopsilva090;
 
-import com.github.jvtopsilva090.frame.PaginaPrincipal;
+import com.github.jvtopsilva090.frame.CalculadoraCompleta;
 
 public class CalculadoraCPLApplication {
     public static void main(String[] args) {
-        new PaginaPrincipal().setVisible(true);
+        new CalculadoraCompleta().setVisible(true);
     }
 }

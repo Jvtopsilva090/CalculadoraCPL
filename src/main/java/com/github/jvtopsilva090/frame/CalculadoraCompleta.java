@@ -1,90 +1,116 @@
 package com.github.jvtopsilva090.frame;
 
 import com.github.jvtopsilva090.service.HistoricoService;
+import com.github.jvtopsilva090.utils.TipoOperacaoEnum;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
+import java.math.BigDecimal;
 
 public class CalculadoraCompleta extends JFrame implements ActionListener {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private JTextField display;
-    private double valorAtual = 0;
-    private String operacao = "";
-    private final HistoricoService historicoService = new HistoricoService();
-    private String operacaoCompleta = "";
+
+    private final JTextField display;
+    private final HistoricoService historicoService;
+
+    private boolean possuiDecimal;
+
+    private String operacao;
+    private BigDecimal valorTotal;
+
+    private BigDecimal valorAtual;
+    private BigDecimal valorDecimalAtual;
+
+    private TipoOperacaoEnum tipoOperacao;
 
     public CalculadoraCompleta() {
         super();
-        setTitle("Calculadora CPL");
-        setSize(350, 550);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
 
-        display = new JTextField();
-        display.setEditable(false);
-        display.setFont(new Font("Verdana", Font.BOLD, 28));
-        display.setHorizontalAlignment(JTextField.RIGHT);
-        display.setPreferredSize(new Dimension(400, 90));
-        add(display, BorderLayout.NORTH);
+        this.historicoService = new HistoricoService();
+        this.tipoOperacao = TipoOperacaoEnum.NONE;
+        this.valorTotal = BigDecimal.ZERO;
+        this.valorAtual = BigDecimal.ZERO;
+        this.valorDecimalAtual = BigDecimal.ZERO;
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(5, 4, 8, 8));
-        panel.setBackground(Color.BLACK);
+        this.display = new JTextField() {{
+            setEditable(false);
+            setHorizontalAlignment(JTextField.RIGHT);
+            setPreferredSize(new Dimension(400, 90));
+            setFont(new Font("Verdana", Font.BOLD, 28));
+        }};
+
+        JPanel digitalPanel = new JPanel() {{
+            setLayout(new GridLayout(5, 4, 8, 8));
+            setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 8));
+            setBackground(Color.WHITE);
+        }};
 
         String[] botoes = {
-            "7", "8", "9", "/",
+            "1", "2", "3", "/",
             "4", "5", "6", "*",
-            "1", "2", "3", "-",
-            "0", ".", "=", "+",
+            "7", "8", "9", "-",
+            ".", "0", "=", "+",
             "C", "√", "^", "%"
         };
 
         for (String texto : botoes) {
             JButton botao = criarBotao(texto);
-            panel.add(botao);
+            digitalPanel.add(botao);
         }
 
-        JPanel painelInferior = new JPanel(new GridLayout(1, 2, 8, 8));
-        JButton botaoVoltar = criarBotaoPersonalizado("Voltar");
-        botaoVoltar.addActionListener(e -> {
-            this.dispose();
-            new PaginaPrincipal().setVisible(true);
-        });
-
+        JButton botaoVoltar = criarBotaoPersonalizado("Sair");
         JButton botaoHistorico = criarBotaoPersonalizado("Histórico");
-        botaoHistorico.addActionListener(e -> {
-            new HistoricoFrame().setVisible(true);
-        });
 
-        painelInferior.add(botaoVoltar);
-        painelInferior.add(botaoHistorico);
+        botaoVoltar.addActionListener(e -> this.dispose());
 
-        add(panel, BorderLayout.CENTER);
-        add(painelInferior, BorderLayout.SOUTH);
-        setLocationRelativeTo(null);
+        botaoHistorico.addActionListener(e -> new HistoricoFrame().setVisible(true));
+
+        JPanel bottomPanel = new JPanel() {{
+            setLayout(new GridLayout(1, 2, 8, 8));
+            setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+            setBackground(Color.WHITE);
+
+            add(botaoVoltar);
+            add(botaoHistorico);
+        }};
+
+        this.setTitle("Calculadora CPL");
+        this.setSize(350, 550);
+        this.setResizable(false);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLayout(new BorderLayout());
+        this.setLocationRelativeTo(null);
+
+        this.add(display, BorderLayout.NORTH);
+        this.add(digitalPanel, BorderLayout.CENTER);
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private JButton criarBotao(String texto) {
-        JButton botao = new JButton(texto);
-        botao.setFont(new Font("Verdana", Font.BOLD, 20));
-        botao.setBackground(new Color(128, 0, 128));
-        botao.setForeground(Color.BLACK);
-        botao.setFocusPainted(false);
-        botao.setOpaque(true);
-        botao.setBorderPainted(false);
+        JButton botao = new JButton(texto) {{
+            setFont(new Font("Verdana", Font.BOLD, 20));
+            setBackground(new Color(223, 223, 223));
+            setForeground(Color.BLACK);
+            setBorderPainted(false);
+            setFocusPainted(false);
+            setOpaque(true);
+        }};
+
         botao.addActionListener(this);
 
         botao.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                botao.setBackground(new Color(186, 85, 211));
+                botao.setBackground(new Color(182, 182, 182));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                botao.setBackground(new Color(128, 0, 128));
+                botao.setBackground(new Color(223, 223, 223));
             }
         });
 
@@ -92,67 +118,89 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     }
 
     private JButton criarBotaoPersonalizado(String texto) {
-        JButton botao = new JButton(texto);
-        botao.setFont(new Font("Verdana", Font.BOLD, 18));
-        botao.setBackground(new Color(128, 0, 128));
-        botao.setForeground(Color.BLACK);
-        botao.setFocusPainted(false);
-        botao.setOpaque(true);
-        botao.setBorderPainted(false);
+        JButton botao = new JButton(texto) {{
+            setFont(new Font("Verdana", Font.BOLD, 20));
+            setBackground(new Color(223, 223, 223));
+            setForeground(Color.BLACK);
+            setBorderPainted(false);
+            setFocusPainted(false);
+            setOpaque(true);
+        }};
+
+        botao.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                botao.setBackground(new Color(182, 182, 182));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                botao.setBackground(new Color(223, 223, 223));
+            }
+        });
+
         return botao;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String comando = e.getActionCommand();
         try {
-            if (comando.matches("[0-9]") || comando.equals(".")) {
-                display.setText(display.getText() + comando);
-                operacaoCompleta += comando;
-            } else if (comando.equals("C")) {
-                display.setText("");
-                valorAtual = 0;
-                operacao = "";
-                operacaoCompleta = "";
-            } else if (comando.equals("=")) {
-                double novoValor = Double.parseDouble(display.getText());
-                calcular(novoValor);
-                display.setText(String.valueOf(valorAtual));
-                operacaoCompleta += " = " + valorAtual;
+            String comando = e.getActionCommand();
 
-                // Salvar no banco
-                historicoService.adicionar(operacaoCompleta, valorAtual);
-                operacao = "";
-                operacaoCompleta = "";
-            } else if (comando.equals("√")) {
-                valorAtual = Math.sqrt(Double.parseDouble(display.getText()));
-                display.setText(String.valueOf(valorAtual));
-                historicoService.adicionar("√" + display.getText(), valorAtual);
-            } else if (comando.equals("^")) {
-                valorAtual = Math.pow(Double.parseDouble(display.getText()), 2);
-                display.setText(String.valueOf(valorAtual));
-                historicoService.adicionar(display.getText() + "^2", valorAtual);
-            } else if (comando.equals("%")) {
-                valorAtual = valorAtual * Double.parseDouble(display.getText()) / 100;
-                display.setText(String.valueOf(valorAtual));
-                historicoService.adicionar("porcentagem", valorAtual);
-            } else {
-                valorAtual = Double.parseDouble(display.getText());
-                operacao = comando;
-                operacaoCompleta = valorAtual + " " + operacao + " ";
-                display.setText("");
+            if (comando.matches("[0-9]")) {
+                display.setText(display.getText() + comando);
             }
+
+            switch (comando) {
+                case "C":
+                    limparOperacao();
+                    break;
+            }
+
+//            if (comando.matches("[0-9]") || comando.equals(".")) {
+//                display.setText(display.getText() + comando);
+//                operacaoCompleta += comando;
+//            } else if (comando.equals("C")) {
+//                display.setText("");
+//                valorAtual = 0;
+//                operacao = "";
+//                operacaoCompleta = "";
+//            } else if (comando.equals("=")) {
+//                double novoValor = Double.parseDouble(display.getText());
+//                calcular(novoValor);
+//                display.setText(String.valueOf(valorAtual));
+//                operacaoCompleta += " = " + valorAtual;
+//
+//                // Salvar no banco
+////                historicoService.adicionar(operacaoCompleta, valorAtual);
+//                operacao = "";
+//                operacaoCompleta = "";
+//            } else if (comando.equals("√")) {
+//                valorAtual = Math.sqrt(Double.parseDouble(display.getText()));
+//                display.setText(String.valueOf(valorAtual));
+//            } else if (comando.equals("^")) {
+//                valorAtual = Math.pow(Double.parseDouble(display.getText()), 2);
+//                display.setText(String.valueOf(valorAtual));
+//            } else if (comando.equals("%")) {
+//                valorAtual = valorAtual * Double.parseDouble(display.getText()) / 100;
+//                display.setText(String.valueOf(valorAtual));
+//            } else {
+//                valorAtual = Double.parseDouble(display.getText());
+//                operacao = comando;
+//                operacaoCompleta = valorAtual + " " + operacao + " ";
+//                display.setText("");
+//            }
         } catch (NumberFormatException ex) {
             display.setText("Erro");
         }
     }
 
-    private void calcular(double novoValor) {
-        switch (operacao) {
-            case "+": valorAtual += novoValor; break;
-            case "-": valorAtual -= novoValor; break;
-            case "*": valorAtual *= novoValor; break;
-            case "/": valorAtual = (novoValor != 0) ? valorAtual / novoValor : 0; break;
-        }
+    private void limparOperacao() {
+        tipoOperacao = TipoOperacaoEnum.NONE;
+        valorTotal = BigDecimal.ZERO;
+        valorAtual = BigDecimal.ZERO;
+        valorDecimalAtual = BigDecimal.ZERO;
+
+        display.setText("");
     }
 }

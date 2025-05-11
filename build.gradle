@@ -18,6 +18,10 @@ repositories {
 dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
     testImplementation 'junit:junit:4.13.2'
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+    testCompileOnly("org.projectlombok:lombok:1.18.38")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 }
 
 tasks.named('test') {

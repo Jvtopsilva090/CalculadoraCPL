@@ -1,23 +1,24 @@
 package com.github.jvtopsilva090.service;
 
-import com.github.jvtopsilva090.model.HistoricoModel;
-import com.github.jvtopsilva090.repository.HistoricoDAO;
+import com.github.jvtopsilva090.entity.Historico;
+import com.github.jvtopsilva090.repository.HistoricoRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class HistoricoService {
-    private final HistoricoDAO dao;
+
+    private final HistoricoRepository historicoRepository;
 
     public HistoricoService() {
-        dao = new HistoricoDAO();
+        historicoRepository = new HistoricoRepository();
     }
 
-    public void adicionar(String operacao, double resultado) {
-        HistoricoModel h = new HistoricoModel(operacao, resultado);
-        dao.inserir(h);
+    public void adicionar(String operacao, BigDecimal resultado) {
+        historicoRepository.inserir(new Historico(operacao, resultado));
     }
 
-    public List<HistoricoModel> obterTodos() {
-        return dao.listar();
+    public List<Historico> obterTodos() {
+        return historicoRepository.listar();
     }
  }
