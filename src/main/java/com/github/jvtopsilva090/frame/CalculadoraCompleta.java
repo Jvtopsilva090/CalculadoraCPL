@@ -19,19 +19,20 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
 
     private boolean possuiDecimal;
 
-    private String operacao;
+    private String operacaoCompleta;
     private BigDecimal valorTotal;
 
     private BigDecimal valorAtual;
     private BigDecimal valorDecimalAtual;
 
-    private TipoOperacaoEnum tipoOperacao;
+    private TipoOperacaoEnum tipoOperacaoAtual;
 
     public CalculadoraCompleta() {
         super();
 
+        this.operacaoCompleta = "";
         this.historicoService = new HistoricoService();
-        this.tipoOperacao = TipoOperacaoEnum.NONE;
+        this.tipoOperacaoAtual = TipoOperacaoEnum.NONE;
         this.valorTotal = BigDecimal.ZERO;
         this.valorAtual = BigDecimal.ZERO;
         this.valorDecimalAtual = BigDecimal.ZERO;
@@ -148,23 +149,40 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
             String comando = e.getActionCommand();
 
             if (comando.matches("[0-9]")) {
+                if (possuiDecimal) {
+                    valorDecimalAtual = valorDecimalAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
+                } else {
+                    valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
+                }
+
+                System.out.printf("valor atual: %s%n", valorAtual.toString());
+                System.out.printf("valor decimal atual: %s%n", valorDecimalAtual.toString());
+
                 display.setText(display.getText() + comando);
+
+                return;
             }
 
             switch (comando) {
+                case "=":
+                    operacaoCompleta = display.getText();
+                    realizarCalculo();
+                    historicoService.adicionar(operacaoCompleta, valorTotal);
+                    limparOperacaoParcial();
+                    break;
                 case "C":
                     limparOperacao();
                     break;
+                case ".":
+                    if (!possuiDecimal) {
+                        possuiDecimal = true;
+                        display.setText(display.getText() + comando);
+                    }
+                    break;
+                default:
+                    adicionarOperador(TipoOperacaoEnum.from(comando));
             }
 
-//            if (comando.matches("[0-9]") || comando.equals(".")) {
-//                display.setText(display.getText() + comando);
-//                operacaoCompleta += comando;
-//            } else if (comando.equals("C")) {
-//                display.setText("");
-//                valorAtual = 0;
-//                operacao = "";
-//                operacaoCompleta = "";
 //            } else if (comando.equals("=")) {
 //                double novoValor = Double.parseDouble(display.getText());
 //                calcular(novoValor);
@@ -175,28 +193,37 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
 ////                historicoService.adicionar(operacaoCompleta, valorAtual);
 //                operacao = "";
 //                operacaoCompleta = "";
-//            } else if (comando.equals("√")) {
-//                valorAtual = Math.sqrt(Double.parseDouble(display.getText()));
-//                display.setText(String.valueOf(valorAtual));
-//            } else if (comando.equals("^")) {
-//                valorAtual = Math.pow(Double.parseDouble(display.getText()), 2);
-//                display.setText(String.valueOf(valorAtual));
-//            } else if (comando.equals("%")) {
-//                valorAtual = valorAtual * Double.parseDouble(display.getText()) / 100;
-//                display.setText(String.valueOf(valorAtual));
-//            } else {
-//                valorAtual = Double.parseDouble(display.getText());
-//                operacao = comando;
-//                operacaoCompleta = valorAtual + " " + operacao + " ";
-//                display.setText("");
 //            }
         } catch (NumberFormatException ex) {
             display.setText("Erro");
         }
     }
 
+    private void realizarCalculo() {
+        BigDecimal valorAtualCompleto = valorAtual.add(new BigDecimal(String.format("0.%s", valorDecimalAtual.toString())));
+
+        if (tipoOperacaoAtual.equals(TipoOperacaoEnum.NONE)){
+            valorTotal = valorTotal.add(valorAtualCompleto);
+        }
+
+        limparOperacaoParcial();
+    }
+
+    private void adicionarOperador(TipoOperacaoEnum operador) {
+
+    }
+
+    private void limparOperacaoParcial() {
+        valorAtual = BigDecimal.ZERO;
+        valorDecimalAtual = BigDecimal.ZERO;
+        possuiDecimal = false;
+        tipoOperacaoAtual = TipoOperacaoEnum.NONE;
+    }
+
     private void limparOperacao() {
-        tipoOperacao = TipoOperacaoEnum.NONE;
+        operacaoCompleta = "";
+        possuiDecimal = false;
+        tipoOperacaoAtual = TipoOperacaoEnum.NONE;
         valorTotal = BigDecimal.ZERO;
         valorAtual = BigDecimal.ZERO;
         valorDecimalAtual = BigDecimal.ZERO;
