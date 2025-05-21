@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.github.jvtopsilva090'
+version = '2.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
+    testImplementation 'junit:junit:4.13.2'
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+    testCompileOnly("org.projectlombok:lombok:1.18.38")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
