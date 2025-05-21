@@ -1,14 +1,21 @@
-package principal;
+package com.github.jvtopsilva090.frame;
+
+import com.github.jvtopsilva090.entity.Historico;
+import com.github.jvtopsilva090.service.HistoricoService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.Serial;
 import java.util.List;
 
 public class HistoricoFrame extends JFrame {
+
+    @Serial
     private static final long serialVersionUID = 7699574658963268423L;
-	private JTable tabela;
-    private HistoricoService service;
+
+    private final HistoricoService service;
+    private final JTable tabela;
 
     public HistoricoFrame() {
         super("Histórico de Cálculos");
@@ -33,8 +40,8 @@ public class HistoricoFrame extends JFrame {
         String[] colunas = { "ID", "Operação", "Resultado" };
         DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
 
-        List<HistoricoModel> historicos = service.obterTodos();
-        for (HistoricoModel h : historicos) {
+        List<Historico> historicos = service.obterTodos();
+        for (Historico h : historicos) {
             Object[] linha = {
                 h.getId(),
                 h.getOperacao(),
