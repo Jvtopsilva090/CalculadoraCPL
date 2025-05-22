@@ -10,16 +10,16 @@ public enum TipoOperacaoEnum {
     RAIZ_QUADRADA,
     POTENCIA;
 
-    public static TipoOperacaoEnum from(String comando) {
-        return switch (comando) {
-            case "+" -> SOMA;
-            case "-" -> SUBTRACAO;
-            case "*" -> MULTIPLICACAO;
-            case "/" -> DIVISAO;
-            case "%" -> PORCENTAGEM;
-            case "√" -> RAIZ_QUADRADA;
-            case "^" -> POTENCIA;
-            default -> throw new IllegalStateException("Unexpected value: " + comando);
+    public String toDisplay() {
+        return switch (this) {
+            case SOMA -> "+";
+            case SUBTRACAO -> "-";
+            case MULTIPLICACAO -> "*";
+            case DIVISAO -> "/";
+            case PORCENTAGEM -> "%";
+            case RAIZ_QUADRADA -> "√";
+            case POTENCIA -> "^";
+            case NONE -> "";
         };
     }
 }
