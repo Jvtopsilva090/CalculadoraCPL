@@ -1,6 +1,8 @@
 package com.github.jvtopsilva090.frame;
 
+import com.github.jvtopsilva090.entity.FragmentoOperacao;
 import com.github.jvtopsilva090.service.HistoricoService;
+import com.github.jvtopsilva090.service.OperacaoService;
 import com.github.jvtopsilva090.utils.TipoOperacaoEnum;
 
 import javax.swing.*;
@@ -8,46 +10,50 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CalculadoraCompleta extends JFrame implements ActionListener {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private final Color BUTTON_COLOR = new Color(128, 0, 128);
+    private final Color BUTTON_HOVER_COLOR = new Color(186, 85, 211);
+
+    private final Color PANEL_COLOR = new Color(19, 19, 19);
+    private final Color DISPLAY_COLOR = new Color(30, 30, 30);
+    private final Color DISPLAY_TEXT_COLOR = new Color(153, 153, 153);
+
     private final JTextField display;
-    private final HistoricoService historicoService;
 
-    private boolean possuiDecimal;
+    private final HistoricoService historicoService = new HistoricoService();
+    private final OperacaoService operacaoService = new OperacaoService();
 
-    private String operacaoCompleta;
-    private BigDecimal valorTotal;
+    private BigDecimal valorAtual = BigDecimal.ZERO;
+    private BigDecimal valorDecimalAtual = BigDecimal.ZERO;
 
-    private BigDecimal valorAtual;
-    private BigDecimal valorDecimalAtual;
+    private boolean possuiDecimal = false;
 
-    private TipoOperacaoEnum tipoOperacaoAtual;
+    private List<FragmentoOperacao> operacaoCompleta = new ArrayList<>();
 
     public CalculadoraCompleta() {
         super();
-
-        this.operacaoCompleta = "";
-        this.historicoService = new HistoricoService();
-        this.tipoOperacaoAtual = TipoOperacaoEnum.NONE;
-        this.valorTotal = BigDecimal.ZERO;
-        this.valorAtual = BigDecimal.ZERO;
-        this.valorDecimalAtual = BigDecimal.ZERO;
 
         this.display = new JTextField() {{
             setEditable(false);
             setHorizontalAlignment(JTextField.RIGHT);
             setPreferredSize(new Dimension(400, 90));
             setFont(new Font("Verdana", Font.BOLD, 28));
+            setBackground(DISPLAY_COLOR);
+            setBorder(BorderFactory.createLineBorder(DISPLAY_COLOR, 0));
+            setForeground(DISPLAY_TEXT_COLOR);
         }};
 
         JPanel digitalPanel = new JPanel() {{
             setLayout(new GridLayout(5, 4, 8, 8));
             setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 8));
-            setBackground(Color.WHITE);
+            setBackground(PANEL_COLOR);
         }};
 
         String[] botoes = {
@@ -73,7 +79,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
         JPanel bottomPanel = new JPanel() {{
             setLayout(new GridLayout(1, 2, 8, 8));
             setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-            setBackground(Color.WHITE);
+            setBackground(PANEL_COLOR);
 
             add(botaoVoltar);
             add(botaoHistorico);
@@ -94,7 +100,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     private JButton criarBotao(String texto) {
         JButton botao = new JButton(texto) {{
             setFont(new Font("Verdana", Font.BOLD, 20));
-            setBackground(new Color(223, 223, 223));
+            setBackground(BUTTON_COLOR);
             setForeground(Color.BLACK);
             setBorderPainted(false);
             setFocusPainted(false);
@@ -106,12 +112,12 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
         botao.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                botao.setBackground(new Color(182, 182, 182));
+                botao.setBackground(BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                botao.setBackground(new Color(223, 223, 223));
+                botao.setBackground(BUTTON_COLOR);
             }
         });
 
@@ -121,7 +127,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     private JButton criarBotaoPersonalizado(String texto) {
         JButton botao = new JButton(texto) {{
             setFont(new Font("Verdana", Font.BOLD, 20));
-            setBackground(new Color(223, 223, 223));
+            setBackground(BUTTON_COLOR);
             setForeground(Color.BLACK);
             setBorderPainted(false);
             setFocusPainted(false);
@@ -131,12 +137,12 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
         botao.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                botao.setBackground(new Color(182, 182, 182));
+                botao.setBackground(BUTTON_HOVER_COLOR);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                botao.setBackground(new Color(223, 223, 223));
+                botao.setBackground(BUTTON_COLOR);
             }
         });
 
@@ -145,89 +151,77 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(operacaoCompleta);
+
         try {
             String comando = e.getActionCommand();
 
             if (comando.matches("[0-9]")) {
+                if (!possuiDecimal && display.getText().contains(".")) {
+                    display.setText(comando);
+                    return;
+                }
+
                 if (possuiDecimal) {
                     valorDecimalAtual = valorDecimalAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
                 } else {
                     valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
                 }
 
-                System.out.printf("valor atual: %s%n", valorAtual.toString());
-                System.out.printf("valor decimal atual: %s%n", valorDecimalAtual.toString());
-
                 display.setText(display.getText() + comando);
-
                 return;
             }
 
             switch (comando) {
-                case "=":
-                    operacaoCompleta = display.getText();
-                    realizarCalculo();
-                    historicoService.adicionar(operacaoCompleta, valorTotal);
-                    limparOperacaoParcial();
-                    break;
-                case "C":
-                    limparOperacao();
-                    break;
-                case ".":
+                case "+" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SOMA);
+                case "-" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SUBTRACAO);
+                case "*" -> adicionarFragmentoOperacao(TipoOperacaoEnum.MULTIPLICACAO);
+                case "/" -> adicionarFragmentoOperacao(TipoOperacaoEnum.DIVISAO);
+                case "√" -> adicionarFragmentoOperacao(TipoOperacaoEnum.RAIZ_QUADRADA);
+                case "^" -> adicionarFragmentoOperacao(TipoOperacaoEnum.POTENCIA);
+                case "%" -> adicionarFragmentoOperacao(TipoOperacaoEnum.PORCENTAGEM);
+                case "C" -> limparTela();
+                case "." -> {
                     if (!possuiDecimal) {
                         possuiDecimal = true;
                         display.setText(display.getText() + comando);
                     }
-                    break;
-                default:
-                    adicionarOperador(TipoOperacaoEnum.from(comando));
-            }
+                }
+                case "=" -> {
+                    BigDecimal valorAtualComDecimal = valorAtual.add(new BigDecimal(String.format("0.%s", valorDecimalAtual.toString())));
+                    operacaoCompleta.add(new FragmentoOperacao(valorAtualComDecimal, TipoOperacaoEnum.NONE));
 
-//            } else if (comando.equals("=")) {
-//                double novoValor = Double.parseDouble(display.getText());
-//                calcular(novoValor);
-//                display.setText(String.valueOf(valorAtual));
-//                operacaoCompleta += " = " + valorAtual;
-//
-//                // Salvar no banco
-////                historicoService.adicionar(operacaoCompleta, valorAtual);
-//                operacao = "";
-//                operacaoCompleta = "";
-//            }
+                    BigDecimal valorTotal = operacaoService.calcularListaOperacao(operacaoCompleta);
+                    String textoOperacao = operacaoService.converterOperacaoCompletaToString(operacaoCompleta);
+
+                    limparTela();
+
+                    valorAtual = valorTotal;
+                    display.setText(valorTotal.toString());
+                    historicoService.adicionar(textoOperacao, valorTotal);
+                }
+            }
         } catch (NumberFormatException ex) {
             display.setText("Erro");
         }
     }
 
-    private void realizarCalculo() {
-        BigDecimal valorAtualCompleto = valorAtual.add(new BigDecimal(String.format("0.%s", valorDecimalAtual.toString())));
-
-        if (tipoOperacaoAtual.equals(TipoOperacaoEnum.NONE)){
-            valorTotal = valorTotal.add(valorAtualCompleto);
-        }
-
-        limparOperacaoParcial();
+    private void adicionarFragmentoOperacao(TipoOperacaoEnum tipoOperacaoFragmento) {
+        BigDecimal valorAtualComDecimal = valorAtual.add(new BigDecimal(String.format("0.%s", valorDecimalAtual.toString())));
+        operacaoCompleta.add(new FragmentoOperacao(valorAtualComDecimal, tipoOperacaoFragmento));
+        display.setText(display.getText() + tipoOperacaoFragmento.toDisplay());
+        limparCache();
     }
 
-    private void adicionarOperador(TipoOperacaoEnum operador) {
-
-    }
-
-    private void limparOperacaoParcial() {
+    private void limparCache() {
         valorAtual = BigDecimal.ZERO;
         valorDecimalAtual = BigDecimal.ZERO;
         possuiDecimal = false;
-        tipoOperacaoAtual = TipoOperacaoEnum.NONE;
     }
 
-    private void limparOperacao() {
-        operacaoCompleta = "";
-        possuiDecimal = false;
-        tipoOperacaoAtual = TipoOperacaoEnum.NONE;
-        valorTotal = BigDecimal.ZERO;
-        valorAtual = BigDecimal.ZERO;
-        valorDecimalAtual = BigDecimal.ZERO;
-
+    private void limparTela() {
+        limparCache();
         display.setText("");
+        operacaoCompleta = new ArrayList<>();
     }
 }

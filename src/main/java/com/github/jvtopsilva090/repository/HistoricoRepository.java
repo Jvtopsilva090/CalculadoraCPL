@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.*;
 
 public class HistoricoRepository {
+
     private static final String URL = "jdbc:sqlite:historico.db";
 
     public HistoricoRepository() {
