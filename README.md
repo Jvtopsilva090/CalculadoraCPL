@@ -107,7 +107,7 @@ CalculadoraCPL/
 - [@leandrogaldinow](https://github.com/leandrogaldinow)
 - 🧑‍💻 Pedro Nunes Marques Junior - 
 - [@penuma0960](https://github.com/penuma0960)
-- 🧑‍💻 VICTOR HUGO MAGALHÃES TAVARES - 
+- 🧑‍💻 Victor Hugo Batista Pereira - 
 - [@VitinhoProgramacoes](https://github.com/VitinhoProgramacoes)
 - 
 ---
