@@ -4,58 +4,69 @@ Este é um projeto de **Calculadora desenvolvida em Java**, com interface gráfi
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## **_🛠️ Tecnologias Utilizadas_**
 
 - **Java** (Linguagem principal)
 - **Swing** (Interface gráfica)
 - **NetBeans / VS Code / IntelliJ**
-- **JDK 21** ou superior
+- **JDK 17/21** ou superior
 
 ---
 
-## ⚙️ Funcionalidades
+## **_⚙️ Funcionalidades_**
 
-- Operações básicas:
-  - Soma
-  - Subtração
-  - Multiplicação
-  - Divisão
-- Limpar campos
-- Interface amigável e intuitiva
-- Sistema de tratamento de erros
+- **Operações básicas:**
+  - **Soma**
+  - **Subtração**
+  - **Multiplicação**
+  - **Divisão**
+- **Limpar campos**
+- **Interface amigável e intuitiva**
+- **Sistema de tratamento de erros**
+- **Historico de Calculos**
+- **Banco de dados local**
 
 ---
 
-## 🚀 Como Executar o Projeto
+## **_🚀 Como Executar o Projeto_**
 
-### ✅ Pré-requisitos
+### **_✅ Pré-requisitos_**
 
-- Java JDK instalado (versão 17 ou superior)
-- Uma IDE que suporte Java
+- **Java JDK instalado (versão 17 ou superior)**
+- **Uma IDE que suporte Java**
 
-### ▶️ Passo a passo
+### **_▶️ Passo a passo_**
 
-1. Clone o repositório:
+## _1. Clone o repositório:_
 
 ```bash
-git clone https://github.com/Jvtopsilva090/CalculadoraCPL.git
+ git clone https://github.com/Jvtopsilva090/CalculadoraCPL.git
 ```
 
-2. Abra o projeto na sua IDE de preferência.
+## **_Abra o projeto na sua IDE de preferência_.**
 
-3. Execute o arquivo principal:
+## _2. Execute o arquivo principal:_
 
 ```bash
-Calculadora.java
+  Calculadora.java
 ```
 
-4. Utilize normalmente a calculadora.
+## **_Utilize normalmente a calculadora._**
 
 ---
 
-## 💻 Imagens da Interface
+## 💻 _**Imagens da Interface**_
 
-> *(Adicione aqui prints da interface)*
+## Calculadora em execução
+![Calculadora](./imagens/CalculadoraCPL.png)
+
+
+---
+
+## Historico dos Calculos:
+
+![Histórico de Cálculos](./imagens/HistoricoDeCalculos.png)
+
 
 ---
 
@@ -63,27 +74,49 @@ Calculadora.java
 
 ```plaintext
 CalculadoraCPL/
-├── src/
-│   └── calculadora/
-│       ├── Calculadora.java
-│       └── ...
-├── README.md
-└── ...
+├── imagens/                          # Pasta com imagens usadas no README
+│   ├── CalculadoraCPL.png
+│   └── HistoricoDeCalculos.png
+│
+├── src/                               # Código-fonte Java
+│   └── main/
+│       └── java/
+│           └── com/
+│               └── github/
+│                   └── jvtopsilva090/
+│                       ├── Calculadora.java         # Classe principal da calculadora
+│                       ├── Historico.java           # (Exemplo) Classe para histórico de cálculos
+│                       └── ...                      # Outras classes, se existirem
+│
+├── README.md                          # Documentação do projeto
+├── .gitignore                         # Arquivos e pastas ignorados pelo Git
+├── LICENSE                             # Licença do projeto
+└── CalculadoraCPL.iml                  # Arquivo de configuração da IDE (IntelliJ, opcional)
+
 ```
 
 ---
 
 ## 👨‍💻 Colaboradores
 
-- 🧑‍💻 João Vitor - [@Jvtopsilva090](https://github.com/Jvtopsilva090)
-- 🧑‍💻 Nome do colaborador 1 - [@usuario1](https://github.com/usuario1)
-- 🧑‍💻 Nome do colaborador 2 - [@usuario2](https://github.com/usuario2)
-
+- 🧑‍💻 João Vitor Ferreira da Silva - 
+- [@Jvtopsilva090](https://github.com/Jvtopsilva090)
+- 🧑‍💻 ARIEL JORGE DA SILVA - 
+- [@arieljorge](https://github.com/arieljorge)
+- 🧑‍💻 LEANDRO BATISTA DE SOUSA GALDINO - 
+- [@leandrogaldinow](https://github.com/leandrogaldinow)
+- 🧑‍💻 Pedro Nunes Marques Junior - 
+- [@penuma0960](https://github.com/penuma0960)
+- 🧑‍💻 VICTOR HUGO MAGALHÃES TAVARES - 
+- [@VitinhoProgramacoes](https://github.com/VitinhoProgramacoes)
+- 
 ---
 
 ## 📝 Licença
 
-Este projeto está sob a licença **MIT**. Consulte o arquivo LICENSE para mais informações.
+Este projeto está sob a licença **MIT**. 
+Consulte o arquivo [**_Licença_**](./LICENSE) para mais informações.
+
 
 ---
 
