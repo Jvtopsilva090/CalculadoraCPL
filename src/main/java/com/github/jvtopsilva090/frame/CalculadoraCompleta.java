@@ -57,9 +57,9 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
         }};
 
         String[] botoes = {
-            "1", "2", "3", "/",
+            "7", "8", "9", "/",
             "4", "5", "6", "*",
-            "7", "8", "9", "-",
+            "1", "2", "3", "-",
             ".", "0", "=", "+",
             "C", "√", "^", "%"
         };
