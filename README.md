@@ -70,6 +70,30 @@ Este é um projeto de **Calculadora desenvolvida em Java**, com interface gráfi
 
 ---
 
+## Prints dos testes Feitos no JUnit5
+(Utilizei O termux-Debian para rodar o JUnit5 para fazer os teste, releve a imagens de baixa qualidade)
+
+
+
+
+![Print De Teste Feito com Sucesso](./imagens/PrintTeste.jpg)
+
+
+
+
+---
+
+
+
+
+![Print Subindo para o GitHub](./imagens/PrintSubindoParaOGitHub.jpg)
+
+
+
+
+---
+
+
 ## 🔧 Estrutura do Projeto
 
 ```plaintext
