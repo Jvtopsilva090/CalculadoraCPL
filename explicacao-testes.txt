@@ -1,0 +1,62 @@
+==============================
+EXPLICAÇÃO DOS TESTES JUNIT 5
+==============================
+
+O projeto CalculadoraCPL foi desenvolvido com foco em testes automatizados utilizando JUnit 5, conforme solicitado no Projeto Integrador IV-A.
+
+1. CLASSE DE TESTES
+--------------------
+Foi criada a classe:
+> src/test/java/CalculadoraTest.java
+
+Esta classe realiza testes unitários para as 4 operações:
+- Soma
+- Subtração
+- Multiplicação
+- Divisão (incluindo teste de divisão por zero)
+
+2. FERRAMENTA UTILIZADA
+------------------------
+Utilizei o JUnit Platform Console Standalone 1.10.2 para executar os testes, baixado diretamente do Maven:
+
+> lib/junit-platform-console-standalone-1.10.2.jar
+
+3. COMPILAÇÃO DOS TESTES
+-------------------------
+O código foi compilado com:
+
+> javac -d out -cp lib/junit-platform-console-standalone-1.10.2.jar src/main/java/Calculadora.java src/test/java/CalculadoraTest.java
+
+4. EXECUÇÃO DOS TESTES
+-----------------------
+Os testes foram executados com sucesso usando:
+
+> java -jar lib/junit-platform-console-standalone-1.10.2.jar --class-path out --scan-classpath
+
+Todos os testes passaram ✅
+
+5. RESULTADOS SALVOS
+---------------------
+A saída completa dos testes foi registrada no arquivo:
+
+> saida-testes.txt
+
+Esse arquivo comprova a execução correta dos testes unitários implementados.
+
+6. CONTROLE DE VERSÃO
+----------------------
+Foi criado o branch:
+> feature/testes-junit
+
+Após desenvolvimento, a branch foi enviada ao GitHub e está pronta para ser fundida com a branch principal `master`.
+
+Link do Pull Request:
+> https://github.com/Jvtopsilva090/CalculadoraCPL/compare/feature/testes-junit?expand=1
+
+==============================
+Autor: João Vitor (jvtopdasilvinha0901@gmail.com)
+Projeto Integrador IV-A – PUC Goiás
+==============================
+
+
+---
