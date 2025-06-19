@@ -17,3 +17,28 @@ Este arquivo documenta os testes realizados na CalculadoraCPL.
   saida-testes.txt
 
 Todos os testes passaram com sucesso ✅.
+
+---
+
+## Prints dos testes Feitos no JUnit5
+(Utilizei O termux-Debian para rodar o JUnit5 para fazer os teste, releve a imagens de baixa qualidade)
+
+
+
+
+![Print De Teste Feito com Sucesso](./imagens/PrintTeste.jpg)
+
+
+
+
+---
+
+
+
+
+![Print Subindo para o GitHub](./imagens/PrintSubindoParaOGitHub.jpg)
+
+
+
+
+---
