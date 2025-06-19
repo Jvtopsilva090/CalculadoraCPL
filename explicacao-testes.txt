@@ -7,7 +7,7 @@ O projeto CalculadoraCPL foi desenvolvido com foco em testes automatizados utili
 1. CLASSE DE TESTES
 --------------------
 Foi criada a classe:
-> src/test/java/CalculadoraTest.java
+> src/test/java/OperacaoServiceTest.java
 
 Esta classe realiza testes unitários para as 4 operações:
 - Soma

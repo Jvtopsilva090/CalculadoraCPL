@@ -38,6 +38,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     private BigDecimal valorDecimalAtual = BigDecimal.ZERO;
 
     private boolean possuiDecimal = false;
+    private boolean isNegativo = false;
 
     private List<FragmentoOperacao> operacaoCompleta = new ArrayList<>();
 
@@ -172,7 +173,11 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
                 if (possuiDecimal) {
                     valorDecimalAtual = valorDecimalAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
                 } else {
-                    valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
+                    if (isNegativo) {
+                        valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(String.format("-%s", comando)));
+                    } else {
+                        valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
+                    }
                 }
 
                 display.setText(display.getText() + comando);
@@ -182,7 +187,14 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
             //laço swiitch responsável por atribuir aos botões os seguintes métodos
             switch (comando) {
                 case "+" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SOMA);
-                case "-" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SUBTRACAO);
+                case "-" -> {
+                    if (valorAtual.compareTo(BigDecimal.ZERO) == 0) {
+                        display.setText(display.getText() + comando);
+                        isNegativo = true;
+                    } else {
+                        adicionarFragmentoOperacao(TipoOperacaoEnum.SUBTRACAO);
+                    }
+                }
                 case "*" -> adicionarFragmentoOperacao(TipoOperacaoEnum.MULTIPLICACAO);
                 case "/" -> adicionarFragmentoOperacao(TipoOperacaoEnum.DIVISAO);
                 case "√" -> adicionarFragmentoOperacao(TipoOperacaoEnum.RAIZ_QUADRADA);
@@ -209,7 +221,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
                     historicoService.adicionar(textoOperacao, valorTotal);
                 }
             }
-        } catch (NumberFormatException ex) {
+        } catch (Exception ex) {
             display.setText("Erro");
         }
     }
@@ -225,11 +237,12 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
         valorAtual = BigDecimal.ZERO;
         valorDecimalAtual = BigDecimal.ZERO;
         possuiDecimal = false;
+        isNegativo = false;
     }
 
     private void limparTela() {
         limparCache();
-        display.setText("");
         operacaoCompleta = new ArrayList<>();
+        display.setText("");
     }
 }
