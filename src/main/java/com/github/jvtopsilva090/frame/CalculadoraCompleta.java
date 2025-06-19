@@ -21,6 +21,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    //cores
     private final Color BUTTON_COLOR = new Color(128, 0, 128);
     private final Color BUTTON_HOVER_COLOR = new Color(186, 85, 211);
 
@@ -37,9 +38,11 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     private BigDecimal valorDecimalAtual = BigDecimal.ZERO;
 
     private boolean possuiDecimal = false;
+    private boolean isNegativo = false;
 
     private List<FragmentoOperacao> operacaoCompleta = new ArrayList<>();
 
+    //dimensões e alinhamento
     public CalculadoraCompleta() {
         super();
 
@@ -52,13 +55,15 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
             setBorder(BorderFactory.createLineBorder(DISPLAY_COLOR, 0));
             setForeground(DISPLAY_TEXT_COLOR);
         }};
-
+        
+        //layout em grade do painel principal, responsável pela estrutura de calculador
         JPanel digitalPanel = new JPanel() {{
             setLayout(new GridLayout(5, 4, 8, 8));
             setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 8));
             setBackground(PANEL_COLOR);
         }};
 
+        //conteúdo de cada botão
         String[] botoes = {
             "7", "8", "9", "/",
             "4", "5", "6", "*",
@@ -168,16 +173,28 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
                 if (possuiDecimal) {
                     valorDecimalAtual = valorDecimalAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
                 } else {
-                    valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
+                    if (isNegativo) {
+                        valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(String.format("-%s", comando)));
+                    } else {
+                        valorAtual = valorAtual.multiply(BigDecimal.TEN).add(new BigDecimal(comando));
+                    }
                 }
 
                 display.setText(display.getText() + comando);
                 return;
             }
 
+            //laço swiitch responsável por atribuir aos botões os seguintes métodos
             switch (comando) {
                 case "+" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SOMA);
-                case "-" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SUBTRACAO);
+                case "-" -> {
+                    if (valorAtual.compareTo(BigDecimal.ZERO) == 0) {
+                        display.setText(display.getText() + comando);
+                        isNegativo = true;
+                    } else {
+                        adicionarFragmentoOperacao(TipoOperacaoEnum.SUBTRACAO);
+                    }
+                }
                 case "*" -> adicionarFragmentoOperacao(TipoOperacaoEnum.MULTIPLICACAO);
                 case "/" -> adicionarFragmentoOperacao(TipoOperacaoEnum.DIVISAO);
                 case "√" -> adicionarFragmentoOperacao(TipoOperacaoEnum.RAIZ_QUADRADA);
@@ -204,7 +221,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
                     historicoService.adicionar(textoOperacao, valorTotal);
                 }
             }
-        } catch (NumberFormatException ex) {
+        } catch (Exception ex) {
             display.setText("Erro");
         }
     }
@@ -220,11 +237,12 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
         valorAtual = BigDecimal.ZERO;
         valorDecimalAtual = BigDecimal.ZERO;
         possuiDecimal = false;
+        isNegativo = false;
     }
 
     private void limparTela() {
         limparCache();
-        display.setText("");
         operacaoCompleta = new ArrayList<>();
+        display.setText("");
     }
 }

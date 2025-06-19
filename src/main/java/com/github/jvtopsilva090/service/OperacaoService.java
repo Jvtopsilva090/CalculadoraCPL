@@ -26,14 +26,32 @@ public class OperacaoService {
                 case NONE, SOMA -> total = total.add(operacao.getValor());
                 case SUBTRACAO -> total = total.subtract(operacao.getValor());
                 case MULTIPLICACAO -> total = total.multiply(operacao.getValor());
-                case DIVISAO -> total = total.divide(operacao.getValor(), RoundingMode.HALF_EVEN);
-                case POTENCIA -> total = total.pow(operacao.getValor().intValue());
+                case DIVISAO -> total = total.divide(operacao.getValor(), 2, RoundingMode.HALF_EVEN);
+                case POTENCIA -> {
+                    int expoente = operacao.getValor().intValue();
+
+                    if (operacao.getValor().intValue() >= 0) {
+                        total = total.pow(expoente);
+                    } else {
+                        if (total.compareTo(BigDecimal.ZERO) == 0) {
+                            total = BigDecimal.ONE;
+                        } else {
+                            expoente = operacao.getValor().intValue() * (-1);
+
+                            total = BigDecimal.ONE.divide(
+                                    total.pow(expoente),
+                                    2,
+                                    RoundingMode.HALF_EVEN
+                            );
+                        }
+                    }
+                }
                 case RAIZ_QUADRADA -> total = total.add(BigDecimal.valueOf(Math.sqrt(operacao.getValor().doubleValue())));
                 case PORCENTAGEM -> {
                     if (pastValue.equals(BigDecimal.ZERO)) {
                         total = BigDecimal.ZERO;
                     } else {
-                        BigDecimal porcentagem = pastValue.divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN);
+                        BigDecimal porcentagem = pastValue.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_EVEN);
                         total = total.subtract(pastValue).add(porcentagem.multiply(operacao.getValor()));
                     }
                 }
