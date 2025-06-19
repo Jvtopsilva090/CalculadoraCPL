@@ -6,6 +6,7 @@ import com.github.jvtopsilva090.repository.HistoricoRepository;
 import java.math.BigDecimal;
 import java.util.List;
 
+//Classe responsável por inserir as informações das contas no historico
 public class HistoricoService {
 
     private final HistoricoRepository historicoRepository;

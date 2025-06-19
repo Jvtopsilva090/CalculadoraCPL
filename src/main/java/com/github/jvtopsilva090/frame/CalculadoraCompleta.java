@@ -21,6 +21,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    //cores
     private final Color BUTTON_COLOR = new Color(128, 0, 128);
     private final Color BUTTON_HOVER_COLOR = new Color(186, 85, 211);
 
@@ -40,6 +41,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
 
     private List<FragmentoOperacao> operacaoCompleta = new ArrayList<>();
 
+    //dimensões e alinhamento
     public CalculadoraCompleta() {
         super();
 
@@ -52,13 +54,15 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
             setBorder(BorderFactory.createLineBorder(DISPLAY_COLOR, 0));
             setForeground(DISPLAY_TEXT_COLOR);
         }};
-
+        
+        //layout em grade do painel principal, responsável pela estrutura de calculador
         JPanel digitalPanel = new JPanel() {{
             setLayout(new GridLayout(5, 4, 8, 8));
             setBorder(BorderFactory.createEmptyBorder(8, 8, 4, 8));
             setBackground(PANEL_COLOR);
         }};
 
+        //conteúdo de cada botão
         String[] botoes = {
             "7", "8", "9", "/",
             "4", "5", "6", "*",
@@ -175,6 +179,7 @@ public class CalculadoraCompleta extends JFrame implements ActionListener {
                 return;
             }
 
+            //laço swiitch responsável por atribuir aos botões os seguintes métodos
             switch (comando) {
                 case "+" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SOMA);
                 case "-" -> adicionarFragmentoOperacao(TipoOperacaoEnum.SUBTRACAO);

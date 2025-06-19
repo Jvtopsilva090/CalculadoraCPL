@@ -17,6 +17,7 @@ public class HistoricoFrame extends JFrame {
     private final HistoricoService service;
     private final JTable tabela;
 
+    //Interface completa do campo Histórico
     public HistoricoFrame() {
         super("Histórico de Cálculos");
         setSize(500, 400);
@@ -36,6 +37,7 @@ public class HistoricoFrame extends JFrame {
         carregarTabela();
     }
 
+    //Responsável pela obtencao dos calculos feitos anteriormente e exibicao em tela
     private void carregarTabela() {
         String[] colunas = { "ID", "Operação", "Resultado" };
         DefaultTableModel modelo = new DefaultTableModel(colunas, 0);

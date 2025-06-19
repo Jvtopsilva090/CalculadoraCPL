@@ -5,6 +5,7 @@ import com.github.jvtopsilva090.entity.Historico;
 import java.sql.*;
 import java.util.*;
 
+//Classe responsável por fazer alteracoes e solicitacoes nas tabelas do banco de dados sqlite (operante até o momento)
 public class HistoricoRepository {
 
     private static final String URL = "jdbc:sqlite:historico.db";
