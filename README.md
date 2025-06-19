@@ -95,9 +95,9 @@ Este é um projeto de **Calculadora desenvolvida em Java**, com interface gráfi
 
 
 
-## Print De adicionar um Repositório Externo:
+## Print de Adicionando um Repositório Externo:
 
-![Print Subindo para o GitHub](./imagens/)
+![Print Subindo para o GitHub](./imagens/RepositorioExterno.jpg)
 
 
 
