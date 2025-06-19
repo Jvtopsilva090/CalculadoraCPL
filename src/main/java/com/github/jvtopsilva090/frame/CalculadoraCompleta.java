@@ -13,6 +13,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+//Classe dedicada ao design da calculadora. Nela são iniciadas variáveis com as cores dos botões, do painel, da interface, além de adicionar os
+//espacamentos, o conteúdo de cada botão, a fonte e etc. Além disso, também são atribuídos cada método públicos aos botões de operação, como
+//adicao, subtracao, divisao e multiplicacao.
 public class CalculadoraCompleta extends JFrame implements ActionListener {
 
     @Serial
