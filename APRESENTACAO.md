@@ -8,6 +8,8 @@ A princípio, para iniciar os trabalhos pelo GitHub, é preciso criar uma conta.
 
 ![Tela Login Github](./imagens/TelaLogin.png)
 
+![Histórico de Cálculos](./imagens/HistoricoDeCalculos.png)
+
 ---
 
 Preencha os campos Email, Password, Username, escolha seu país atual e concorde com os termos marcando a checkbox acima do botão "Continue". Ao fim desse processo, basta clicar em Continue e sua conta estará criada.
